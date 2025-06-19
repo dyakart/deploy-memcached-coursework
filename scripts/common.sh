@@ -10,11 +10,11 @@ SSH_USER="root"
 #################################
 run() {
   local host="$1"; shift
+  local cmd="$*"
   if [[ "$host" == "192.168.0.23" || "$host" == "localhost" ]]; then
-    # Выполняем локально через bash -c, чтобы интерпретировались внутр. кавычки
-    bash -c "$*"
+    bash -c "$cmd"
   else
-    ssh -o StrictHostKeyChecking=no "${SSH_USER}@${host}" bash -c "'$*'"
+    ssh -o StrictHostKeyChecking=no "${SSH_USER}@${host}" "$cmd"
   fi
 }
 
