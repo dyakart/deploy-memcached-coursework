@@ -20,7 +20,7 @@ fi
 
 # 3. Трассировки на 8.8.8.8
 for h in $ALT $ASTRA; do
-  hop=$(run "$h" "traceroute -m1 -q1 8.8.8.8 | tail -n +2 | awk '{print $2}'")
+  hop=$(run "$h" "ip route get 8.8.8.8 | awk '{for(i=1;i<=NF;i++) if(\$i==\"via\"){print \$(i+1); exit}}'")
   [[ "$hop" == "$REDOS" ]] && echo "[✓] $h выходит через RedOS" || { echo "[✗] $h не через RedOS"; ok=false; }
 done
 
