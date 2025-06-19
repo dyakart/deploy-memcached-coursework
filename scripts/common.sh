@@ -24,7 +24,7 @@ ensure_line() {
   # Создаём файл, если нет
   run "$host" "mkdir -p $(dirname $file) && touch $file"
   if ! run "$host" "grep -qF -- \"$line\" \"$file\""; then
-    run "$host" "echo '$line' >> $file"
+    run "$host" "echo \"$line\" >> $file"
   fi
 }
 
