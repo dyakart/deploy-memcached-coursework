@@ -4,13 +4,14 @@ SSH_USER="root"
 
 run() {  # run <host> <command>
   local host="$1"; shift
-  # Если скрипт запущен на RedOS (192.168.0.23), выполняем команды локально,
-  # чтобы не плодить SSH-подключения к localhost.
+  # Если скрипт запущен **на самом RedOS** (192.168.0.23) или указали localhost,
+  # выполняем команду напрямую, иначе через SSH.
   if [[ "$host" == "192.168.0.23" || "$host" == "localhost" ]]; then
-    "$@"   # прямая локальная команда
+    "$@"
   else
     ssh -o StrictHostKeyChecking=no "${SSH_USER}@${host}" "$@"
   fi
+}
 }@${host}" "$@"
 }
 
