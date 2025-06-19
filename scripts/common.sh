@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 # Общие вспомогательные функции
+
 SSH_USER="root"
 
-run() {  # run <host> <command>
+# run <host> <command>
+run() {
   local host="$1"; shift
-  # Если скрипт запущен **на самом RedOS** (192.168.0.23) или указали localhost,
-  # выполняем команду напрямую, иначе через SSH.
   if [[ "$host" == "192.168.0.23" || "$host" == "localhost" ]]; then
     "$@"
   else
     ssh -o StrictHostKeyChecking=no "${SSH_USER}@${host}" "$@"
   fi
-}
-}@${host}" "$@"
 }
 
 # ensure_line <host> <file> <line>
