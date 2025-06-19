@@ -7,11 +7,13 @@ ASTRA="192.168.0.22"
 # 1. Устанавливаем пакет
 run "$ALT" "command -v memcached || (apt-get -yq install memcached || yum -y install memcached)"
 
-# 2. Разрешаем прослушивание на всех интерфейсах
-CONF="/etc/memcached.conf"
-ensure_line "$ALT" "$CONF" "-l 0.0.0.0"
-run "$ALT" "systemctl enable --now memcached"
+# 2. Конфиг: меняем слушающий адрес
+run "$ALT" "if [ -f /etc/memcached.conf ]; then
+              sed -i 's/^-l .*/-l 0.0.0.0/' /etc/memcached.conf
+            fi"
+run "$ALT" "if [ -f /etc/sysconfig/memcached ]; then
+              sed -i 's/^OPTIONS=.*/OPTIONS=\"-l 0.0.0.0 -m 64\"/' /etc/sysconfig/memcached
+            fi"
 
-# 3. iptables: allow only Astra
-iptables_add "$ALT" filter "INPUT -p tcp --dport 11211 -s $ASTRA -j ACCEPT"
-iptables_add "$ALT" filter "INPUT -p tcp --dport 11211 -j DROP"
+# 3. Перезапуск
+run "$ALT" "systemctl enable --now memcached"
