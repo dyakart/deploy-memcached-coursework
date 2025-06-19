@@ -34,10 +34,4 @@ iptables_add() {
   if ! run "$host" "iptables -t $table -C $rule 2>/dev/null"; then
     run "$host" "iptables -t $table -A $rule"
   fi
-} <host> <table> <rule>
-iptables_add() {
-  local host="$1" table="$2" rule="$3"
-  if ! run "$host" "iptables -t $table -C $rule 2>/dev/null"; then
-    run "$host" "iptables -t $table -A $rule"
-  fi
 }
