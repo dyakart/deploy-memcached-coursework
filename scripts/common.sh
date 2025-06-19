@@ -36,16 +36,6 @@ iptables_add() {
   fi
 }
 
- <host> <file> <line>
-ensure_line() {
-  local host="$1" file="$2" line="$3"
-  # Создаём файл, если нет
-  run "$host" "mkdir -p $(dirname $file) && touch $file"
-  if ! run "$host" "grep -qF -- \"$line\" \"$file\""; then
-    run "$host" "echo "$line" >> "$file""
-  fi
-}
-
 # iptables_add <host> <table> <rule>
 iptables_add() {
   local host="$1" table="$2" rule="$3"
